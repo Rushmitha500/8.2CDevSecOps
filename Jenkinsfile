@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/YOUR_USERNAME/8.2CDevSecOps.git'
+                git branch: 'main', url: 'https://github.com/Rushmitha500/8.2CDevSecOps.git'
             }
         }
 
@@ -22,7 +22,7 @@ pipeline {
             post {
                 always {
                     emailext(
-                        to: 'your_email@example.com',
+                        to: 'drushmitha2004@gmail.com',
                         subject: "Jenkins - Run Tests Stage: ${currentBuild.currentResult} - Build #${env.BUILD_NUMBER}",
                         body: """
                             <p>Pipeline: ${env.JOB_NAME}</p>
@@ -50,7 +50,7 @@ pipeline {
             post {
                 always {
                     emailext(
-                        to: 'your_email@example.com',
+                        to: 'drushmitha2004@gmail.com',
                         subject: "Jenkins - Security Scan Stage: ${currentBuild.currentResult} - Build #${env.BUILD_NUMBER}",
                         body: """
                             <p>Pipeline: ${env.JOB_NAME}</p>
