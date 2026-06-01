@@ -16,20 +16,12 @@ pipeline {
     }
 
     post {
-        success {
-            emailext (
-                to: "drushmitha2004@gmail.com",
-                subject: "SUCCESS: Build ${env.BUILD_NUMBER}",
-                body: "Build passed successfully!"
-            )
-        }
-
-        failure {
-            emailext (
-                to: "drushmitha2004@gmail.com",
-                subject: "FAILED: Build ${env.BUILD_NUMBER}",
-                body: "Build failed. Check Jenkins console."
-            )
-        }
+    always {
+        emailext (
+            to: "drushmitha2004@gmail.com",
+            subject: "Build ${currentBuild.currentResult}: ${env.BUILD_NUMBER}",
+            body: "Pipeline completed with status: ${currentBuild.currentResult}"
+        )
     }
+}
 }
