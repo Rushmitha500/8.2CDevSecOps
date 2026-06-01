@@ -3,59 +3,65 @@ pipeline {
 
     stages {
 
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Stage 1: Build'
-                echo 'Task: Compiling and packaging the application code.'
-                echo 'Tool: Maven'
+                git branch: 'main', url: 'https://github.com/YOUR_USERNAME/8.2CDevSecOps.git'
             }
         }
 
-        stage('Unit and Integration Tests') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Stage 2: Unit and Integration Tests'
-                echo 'Task: Running unit tests and integration tests to validate code functionality.'
-                echo 'Tools: JUnit (unit tests), Selenium (integration tests)'
+                bat 'npm install'
             }
         }
 
-        stage('Code Analysis') {
+        stage('Run Tests') {
             steps {
-                echo 'Stage 3: Code Analysis'
-                echo 'Task: Analysing code quality and ensuring it meets industry standards.'
-                echo 'Tool: SonarQube'
+                bat 'npm test || exit /b 0'
+            }
+            post {
+                always {
+                    emailext(
+                        to: 'your_email@example.com',
+                        subject: "Jenkins - Run Tests Stage: ${currentBuild.currentResult} - Build #${env.BUILD_NUMBER}",
+                        body: """
+                            <p>Pipeline: ${env.JOB_NAME}</p>
+                            <p>Stage: Run Tests</p>
+                            <p>Status: ${currentBuild.currentResult}</p>
+                            <p>Build URL: ${env.BUILD_URL}</p>
+                        """,
+                        mimeType: 'text/html',
+                        attachLog: true
+                    )
+                }
             }
         }
 
-        stage('Security Scan') {
+        stage('Generate Coverage Report') {
             steps {
-                echo 'Stage 4: Security Scan'
-                echo 'Task: Scanning the code for known vulnerabilities and security issues.'
-                echo 'Tool: OWASP Dependency-Check'
+                bat 'npm run coverage || exit /b 0'
             }
         }
 
-        stage('Deploy to Staging') {
+        stage('NPM Audit (Security Scan)') {
             steps {
-                echo 'Stage 5: Deploy to Staging'
-                echo 'Task: Deploying the application to a staging environment.'
-                echo 'Tool: AWS CLI deploying to AWS EC2 instance'
+                bat 'npm audit || exit /b 0'
             }
-        }
-
-        stage('Integration Tests on Staging') {
-            steps {
-                echo 'Stage 6: Integration Tests on Staging'
-                echo 'Task: Running integration tests on the staging environment.'
-                echo 'Tool: Selenium'
-            }
-        }
-
-        stage('Deploy to Production') {
-            steps {
-                echo 'Stage 7: Deploy to Production'
-                echo 'Task: Deploying the verified application to the production server.'
-                echo 'Tool: AWS CLI deploying to AWS EC2 instance'
+            post {
+                always {
+                    emailext(
+                        to: 'your_email@example.com',
+                        subject: "Jenkins - Security Scan Stage: ${currentBuild.currentResult} - Build #${env.BUILD_NUMBER}",
+                        body: """
+                            <p>Pipeline: ${env.JOB_NAME}</p>
+                            <p>Stage: NPM Audit (Security Scan)</p>
+                            <p>Status: ${currentBuild.currentResult}</p>
+                            <p>Build URL: ${env.BUILD_URL}</p>
+                        """,
+                        mimeType: 'text/html',
+                        attachLog: true
+                    )
+                }
             }
         }
 
