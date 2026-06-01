@@ -33,3 +33,13 @@ pipeline {
         }
     }
 }
+
+post {
+    success {
+        emailext (
+            subject: "Jenkins Build Notification",
+            body: "Build completed successfully. Please check Jenkins for details.",
+            to: "drushmitha2004@gmail.com"
+        )
+    }
+}
