@@ -23,12 +23,12 @@ pipeline {
                 always {
                     emailext(
                         to: 'drushmitha2004@gmail.com',
-                        subject: "Jenkins - Run Tests Stage: ${currentBuild.currentResult} - Build #${env.BUILD_NUMBER}",
+                        subject: "Jenkins - Run Tests: ${currentBuild.currentResult} - Build #${env.BUILD_NUMBER}",
                         body: """
-                            <p>Pipeline: ${env.JOB_NAME}</p>
-                            <p>Stage: Run Tests</p>
-                            <p>Status: ${currentBuild.currentResult}</p>
-                            <p>Build URL: ${env.BUILD_URL}</p>
+                            <p><b>Pipeline:</b> ${env.JOB_NAME}</p>
+                            <p><b>Stage:</b> Run Tests</p>
+                            <p><b>Status:</b> ${currentBuild.currentResult}</p>
+                            <p><b>Build URL:</b> ${env.BUILD_URL}</p>
                         """,
                         mimeType: 'text/html',
                         attachLog: true
@@ -51,12 +51,12 @@ pipeline {
                 always {
                     emailext(
                         to: 'drushmitha2004@gmail.com',
-                        subject: "Jenkins - Security Scan Stage: ${currentBuild.currentResult} - Build #${env.BUILD_NUMBER}",
+                        subject: "Jenkins - Security Scan: ${currentBuild.currentResult} - Build #${env.BUILD_NUMBER}",
                         body: """
-                            <p>Pipeline: ${env.JOB_NAME}</p>
-                            <p>Stage: NPM Audit (Security Scan)</p>
-                            <p>Status: ${currentBuild.currentResult}</p>
-                            <p>Build URL: ${env.BUILD_URL}</p>
+                            <p><b>Pipeline:</b> ${env.JOB_NAME}</p>
+                            <p><b>Stage:</b> NPM Audit (Security Scan)</p>
+                            <p><b>Status:</b> ${currentBuild.currentResult}</p>
+                            <p><b>Build URL:</b> ${env.BUILD_URL}</p>
                         """,
                         mimeType: 'text/html',
                         attachLog: true
